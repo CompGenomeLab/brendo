@@ -16,7 +16,8 @@ developed an integrated analytical framework to identify genes selectively enric
 
 ## Contents <a name="repocontents"></a>
 
-This repository contains scripts required to reproduce the analysis, as well as code required to run Brendo locally / set up a copy of Brendo. See the subdirectories for detailed instructions. For a deployed version of Brendo, click [here](brendo.sabanciuniv.edu).
+This repository contains scripts required to reproduce the analysis, as well as code required to run Brendo locally / set up a copy of Brendo. See the subdirectories for detailed instructions. For a deployed version of Brendo, click <a href="https://brendo.sabanciuniv.edu" target="_blank"> here </a>.
+
 
 ###  Directory Structure <a name="dirstructure"></a>
 ```bash

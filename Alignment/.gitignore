@@ -1,0 +1,12 @@
+*.png*
+Benchmarks
+Single
+Paired
+runFiles
+*.csv*
+*.txt*
+test.sh
+.snakemake/
+*PEdownload*
+*SEdownload*
+*.log*

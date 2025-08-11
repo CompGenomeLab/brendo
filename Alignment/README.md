@@ -78,4 +78,4 @@ The `Modules/SRActions/fastqWrite.sh` file needs to be configured to give **a co
 
 ### Sample DAG
 
-<img  src="https://github.com/CompGenomeLab/brendo/blob/main/Alignment/dag_minimal.png"/>
+<img  src="https://github.com/CompGenomeLab/brendo/blob/dev/Alignment/dag_minimal.png"/>

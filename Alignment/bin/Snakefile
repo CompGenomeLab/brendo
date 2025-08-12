@@ -1,0 +1,78 @@
+# Driver script for alignment pipeline
+#
+# @zgr2788
+
+
+# Define config & tableName
+configfile: 'config.yaml'
+tablePrefix = config['sampleTable_prefix']
+STARidx = config['STARindexFolder']
+annotExt = config['annotationFile']
+
+# Define I/O functions
+
+## Extracting sampleTables 
+def getTables():
+	return [str("runFiles/" + tablePrefix + "_" + readType + ".txt") for readType in ["single", "paired"]]
+
+
+
+## Getting SRA accessions (DEPRECATED)
+def getSRA(readType):
+	runFile = open(str("runFiles/" + tablePrefix + "_" + readType + ".txt"), "r")
+	
+	if readType == "single":
+		idList = [str("Single/" + line.strip() + "/" + line.strip() + ".sra") for line in runFile.readlines()]
+	
+	else:
+		idList = [str("Paired/" + line.strip() + "/" + line.strip() + ".sra") for line in runFile.readlines()]
+
+	return idList
+
+
+## Getting FASTQ files
+def getFastq(readType, zipped):
+	runFile = open(str("runFiles/" + tablePrefix + "_" + readType + ".txt"), "r")
+	
+	if zipped == 1:
+		suffix = ".gz"
+	else:
+		suffix = ""
+
+
+	if readType == "single":
+		idList = [str("Single/" + line.strip() + "/" + line.strip() + ".fastq" + suffix) for line in runFile.readlines()]
+
+	else:
+		idList = [str("Paired/" + line.strip() + "/" + line.strip() + "_1.fastq" + suffix) for line in runFile.readlines()]
+		runFile = open(str("runFiles/" + tablePrefix + "_" + readType + ".txt"), "r")
+		for line in runFile.readlines():
+			idList.append(str("Paired/" + line.strip() + "/" + line.strip() + "_2.fastq" + suffix))
+
+	return idList
+
+## Getting target files
+def getBAMs(readType):
+	runFile = open(str("runFiles/" + tablePrefix + "_" + readType + ".txt"), "r")
+	
+	if readType == "single":	
+		idList = [str("Single/" + line.strip() + "/" + line.strip() + ".bam") for line in runFile.readlines()]
+
+	else:
+		idList = [str("Paired/" + line.strip() + "/" + line.strip() + ".bam") for line in runFile.readlines()]
+	
+	
+	runFile.close()
+	return idList
+	
+
+
+# Include Modules
+include:'Modules/SRActions/Snakefile'
+include:'Modules/Align/Snakefile'
+include:'Modules/GetCounts/Snakefile'
+
+rule all:
+	input:
+		"Single/counts_single.csv",
+		"Paired/counts_paired.csv"

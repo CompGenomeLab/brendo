@@ -1,0 +1,44 @@
+# Includes the rules for downloading from ENA using aspera
+#
+# @zgr2788
+
+rule getFastqSingle:
+	input:
+		getTables()[0]
+
+	output:
+		"Single/{runID}/{runID}.fastq.gz"
+
+	threads: config['Cores']
+
+	shell:
+		"bash Modules/SRActions/fastqWrite.sh {wildcards.runID} Single {threads}"
+
+
+rule getFastqPaired:
+	input:
+		getTables()[1]
+
+	output:
+		"Paired/{runID}/{runID}_1.fastq.gz",
+		"Paired/{runID}/{runID}_2.fastq.gz"
+
+	threads: config['Cores']
+
+	shell:
+		"bash Modules/SRActions/fastqWrite.sh {wildcards.runID} Paired {threads}"
+
+
+rule unzipFastq:
+	input:
+		getFastq("single", 1),
+		getFastq("paired", 1)
+
+	output:
+		getFastq("single", 0),
+		getFastq("paired", 0)
+
+	threads: config['Cores']
+
+	shell:
+		"bash Modules/SRActions/unzipFastq.sh {threads}"
